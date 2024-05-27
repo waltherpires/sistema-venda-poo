@@ -12,6 +12,13 @@ public class Main {
         System.out.println("Escolha uma categoria: 1. Produtos | 2. Clientes | 3. Vendas ");
         int opcaoInicio = prompt.nextInt();
         prompt.nextLine();
+        if(opcaoInicio == 1) {
+            System.out.println("Opção PRODUTOS selecionada!");
+        } else if(opcaoInicio == 2) {
+            System.out.println("Opção CLIENTES selecionada!");
+        } else if(opcaoInicio == 3) {
+            System.out.println("Opção VENDAS selecionada1");
+        }
         do {
             switch(opcaoInicio) {
                 case 1:
@@ -22,7 +29,6 @@ public class Main {
                     break;
 
                 case 2:
-
                     break;
 
                 case 3:
