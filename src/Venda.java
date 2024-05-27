@@ -1,9 +1,9 @@
 import java.util.Date;
 
 public abstract class Venda {
-    private Cliente cliente;
-    private Produto produto;
-    private Date dataVenda;
+    final private Cliente cliente;
+    final private Produto produto;
+    final private Date dataVenda;
 
     public Venda(Cliente cliente, Produto produto, Date dataVenda) {
         this.cliente = cliente;

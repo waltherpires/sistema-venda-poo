@@ -1,6 +1,6 @@
 public abstract class Produto {
     private String nome;
-    protected double preco;
+    private double preco;
 
     public Produto(String nome, double preco) {
         this.nome = nome;
@@ -16,4 +16,13 @@ public abstract class Produto {
     }
 
     public abstract String toString();
+
+    public boolean equals(Object o) {
+        Produto a = (Produto) o;
+        return this.nome.equals(a.getNome());
+    }
+
+    public int hashCode(){
+        return this.nome.hashCode();
+    }
 }
