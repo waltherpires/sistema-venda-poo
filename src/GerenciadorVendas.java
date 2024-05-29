@@ -19,19 +19,24 @@ public class GerenciadorVendas implements Pesquisa {
     }
 
     public void listarProdutos() {
-        for (Produto produto : produtos) {
-            System.out.println("Produto: " + produto.getNome() + " | Preço: " + produto.getPreco());
+        if(produtos.isEmpty()) {
+            System.out.println("Nenhum produto cadastrado");
+        } else {
+            System.out.println("Produtos: ");
+            for (Produto produto : produtos) {
+                System.out.println(produto.toString());
+            }
         }
     }
 
     public void metodosProdutos(int escolha) {
         Scanner prompt = new Scanner(System.in);
         if(escolha == 1) {
-            System.out.println("Listar produtos selecionado!");
+            System.out.println("Listar produtos: ");
         } else if(escolha == 2){
-            System.out.println("Cadastrar produto selecionado!");
+            System.out.println("Cadastrar produto: ");
         } else if(escolha == 3){
-            System.out.println("Remover Produto Selecionado!");
+            System.out.println("Remover produto: ");
         }
         do {
             switch (escolha) {
@@ -70,32 +75,38 @@ public class GerenciadorVendas implements Pesquisa {
                                 break;
                         }
                         adicionarProduto(produto);
-                        System.out.println("(ADICIONAR PRODUTO) Deseja sair? 3 - Sim | Outro numero - Não");
+                        System.out.println("Escolha o tipo de produto: 1. Eletronico | 2. Medicamento Veterinario | 3. Sair");
                         escolhaProduto = prompt.nextInt();
                         prompt.nextLine();
                     } while (escolhaProduto != 3);
-
                     break;
 
                 case 3:
                     System.out.println("Digite o nome do produto a ser removido: ");
                     String produtoExcluido = prompt.nextLine();
-                    try {
-                        if(pesquisarProduto(produtoExcluido) != null) {
-                          removerProduto(produtoExcluido);
+                    boolean removerProduto;
+
+                    do {
+                        try {
+                            if(pesquisarProduto(produtoExcluido) != null) {
+                                removerProduto(produtoExcluido);
+                            }
+                            removerProduto = false;
+                            break;
+                        } catch (ProdutoNaoEncontradoException e) {
+                            System.out.println(e.getMessage());
+                            removerProduto = false;
+                            break;
                         }
-                    } catch (ProdutoNaoEncontradoException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
+                    } while (removerProduto);
 
                 default:
-                    System.out.println("Opção Invalida! Tente novamente");
-                    escolha = prompt.nextInt();
-                    prompt.nextLine();
+                    System.out.println("Opção Invalida! Produto não encontrado!");
+                    System.out.println("Digite o nome de um produto válido: |");
+                    produtoExcluido = prompt.nextLine();
                     break;
             }
-            System.out.println("(PRODUTOS) Deseja sair? 4 - Sim | Outro numero - Nao");
+            System.out.println("1. Listar Produtos | 2. Cadastrar Produto | 3. Remover produto | 4. Sair ");
             escolha = prompt.nextInt();
             prompt.nextLine();
         } while(escolha != 4);

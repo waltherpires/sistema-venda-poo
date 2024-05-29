@@ -8,4 +8,9 @@ public class VendaCredito extends Venda{
     public double calcularTotal(){
         return getProduto().getPreco()*1.10;
     }
+
+    public String toString(){
+        return "Venda Credito { Cliente: " + getCliente() + " | Produto: " + getProduto() + " | Data: " + getDataVenda() + " }";
+    }
+
 }

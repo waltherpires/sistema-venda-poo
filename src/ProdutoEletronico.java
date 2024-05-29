@@ -4,7 +4,7 @@ public class ProdutoEletronico extends Produto {
     }
 
     public String toString(){
-        return "Eletronico: " + getNome() + '\'' + "Preco: " + getPreco();
+        return "Eletronico: " + getNome()  + " | Preco: " + getPreco();
     }
 
 }

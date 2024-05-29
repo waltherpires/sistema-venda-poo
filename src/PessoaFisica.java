@@ -4,6 +4,6 @@ public class PessoaFisica extends Cliente {
     }
 
     public String toString() {
-        return "Cliente PF{ " + "Nome: " + getNome() + '\'' + ", CPF: " + getCpf() + '\'' + '}';
+        return "Cliente PF{ " + "Nome: " + getNome()  + " |  CPF: " + getCpf() + '}';
     }
 }

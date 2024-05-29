@@ -23,5 +23,7 @@ public abstract class Venda {
         return dataVenda;
     }
 
+    public abstract String toString();
+
     public abstract double calcularTotal();
 }

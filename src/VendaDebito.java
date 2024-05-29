@@ -5,8 +5,11 @@ public class VendaDebito extends Venda{
         super(cliente, produto, dataVenda);
     }
 
-    public double calcularTotal()
-    {
+    public double calcularTotal() {
         return getProduto().getPreco()*1.05;
+    }
+
+    public String toString(){
+        return "Venda Debito { Cliente: " + getCliente() + " | Produto: " + getProduto() + " | Data: " + getDataVenda() + " }";
     }
 }
