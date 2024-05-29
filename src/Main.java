@@ -5,7 +5,8 @@ public class Main {
         Scanner prompt = new Scanner(System.in);
 
         GerenciadorProdutos gerenciadorProdutos = new GerenciadorProdutos();
-        //GerenciadorVendas gerenciadorVendas = new GerenciadorVendas();
+        GerenciadorClientes gerenciadorClientes = new GerenciadorClientes();
+        GerenciadorVendas gerenciadorVendas = new GerenciadorVendas();
         boolean gerenciadorLigado = true;
 
         while (gerenciadorLigado) {
@@ -18,10 +19,10 @@ public class Main {
                     gerenciadorProdutos.menuProdutos();
                     break;
                 case 2:
-                    System.out.println("CLIENTES");
+                    gerenciadorClientes.menuClientes();
                     break;
                 case 3:
-                    System.out.println("VENDAS");
+                    gerenciadorVendas.menuVenda();
                     break;
                 case 4:
                     gerenciadorLigado = false;
@@ -30,7 +31,6 @@ public class Main {
                     System.out.println("Opcao invalida. Escolha uma opcao valida!");
             }
         }
-
         System.out.println("Sistema desligado.");
     }
 }

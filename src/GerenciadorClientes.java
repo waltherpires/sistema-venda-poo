@@ -1,10 +1,8 @@
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class GerenciadorClientes {
+public class GerenciadorClientes implements PesquisaCliente {
     private List <Cliente> clientes = new ArrayList<>();
 
     public void menuClientes(){
@@ -94,7 +92,7 @@ public class GerenciadorClientes {
                                 System.out.println("CPF já cadastrado!");
                             }
                             else {
-                                cliente = new PessoaFisica(nomeCompletoVIP, cpfVIP);
+                                cliente = new ClienteVIP(nomeCompletoVIP, cpfVIP);
                                 clientes.add(cliente);
                             }
                         }
@@ -122,5 +120,14 @@ public class GerenciadorClientes {
         } else {
             System.out.println("Não há um cliente com esse nome");
         }
+    }
+
+    public Cliente pesquisarCliente(String nome) throws ClienteNaoEncontradoException{
+        for(Cliente cliente : clientes) {
+            if(cliente.getNome().equalsIgnoreCase(nome)) {
+                return cliente;
+            }
+        }
+        throw new ClienteNaoEncontradoException("Cliente não encontrado: " + nome);
     }
 }

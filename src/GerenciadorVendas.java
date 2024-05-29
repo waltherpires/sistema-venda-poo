@@ -6,17 +6,54 @@ public class GerenciadorVendas {
     private GerenciadorClientes gerenciadorClientes;
 
     public void menuVenda(){
+        Scanner prompt = new Scanner(System.in);
+        boolean sair = false;
+
+        while(!sair) {
+            System.out.println("1. Listar Vendas | 2. Adicionar Venda | 3. Sair");
+            int escolha = prompt.nextInt();
+            prompt.nextLine();
+
+            switch (escolha){
+                case 1:
+                    listarVendas();
+                    break;
+                case 2:
+                    criarVenda();
+                    break;
+                case 3:
+                    sair = true;
+                    break;
+                default:
+                    System.out.println("Opção inválida. Escolha uma opção válida!");
+            }
+        }
 
     }
 
     public void registrarVenda(Venda venda) throws VendaInvalidaException {
-        if (.getProduto() == null || venda.getCliente() == null) {
+        if (venda.getProduto() == null || venda.getCliente() == null) {
             throw new VendaInvalidaException("Venda invalida: " + venda);
         }
         vendas.add(venda);
     }
 
-    public void criarVenda(int tipoVenda, String nomeProduto, String nomeCliente, Date dataVenda) {
+    public void criarVenda() {
+        Scanner prompt = new Scanner(System.in);
+
+        System.out.println("Pagamento: 1. Débito | 2. Crédito");
+        int tipoVenda = prompt.nextInt();
+        prompt.nextLine();
+
+        System.out.println("Nome do Cliente: ");
+        String nomeCliente = prompt.nextLine();
+
+        System.out.println("Nome do Produto: ");
+        String nomeProduto = prompt.nextLine();
+
+        long currentTimeInMillis = System.currentTimeMillis();
+        Date dataVenda = new Date(currentTimeInMillis);
+
         try {
             Produto produto = gerenciadorProdutos.pesquisarProduto(nomeProduto);
             Cliente cliente = gerenciadorClientes.pesquisarCliente(nomeCliente);
@@ -34,6 +71,8 @@ public class GerenciadorVendas {
             System.out.println("Erro ao realizar venda (Produto): " + e.getMessage());
         } catch (VendaInvalidaException i) {
             System.out.println("Erro ao realizar venda (Venda): " + i.getMessage());
+        } catch (ClienteNaoEncontradoException c) {
+            System.out.println("Erro ao realizar venda (Cliente): " + c.getMessage());
         }
     }
 
