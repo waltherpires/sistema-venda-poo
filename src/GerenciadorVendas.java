@@ -3,13 +3,14 @@ import java.util.*;
 public class GerenciadorVendas {
     List<Venda> vendas = new LinkedList<>();
     private GerenciadorProdutos gerenciadorProdutos;
+    private GerenciadorClientes gerenciadorClientes;
 
     public void menuVenda(){
 
     }
 
     public void registrarVenda(Venda venda) throws VendaInvalidaException {
-        if (venda.getProduto() == null || venda.getCliente() == null) {
+        if (.getProduto() == null || venda.getCliente() == null) {
             throw new VendaInvalidaException("Venda invalida: " + venda);
         }
         vendas.add(venda);
