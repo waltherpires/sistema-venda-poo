@@ -1,3 +1,3 @@
-public interface Pesquisa {
+public interface PesquisaProduto {
     Produto pesquisarProduto(String nome) throws ProdutoNaoEncontradoException;
 }
