@@ -44,84 +44,83 @@ public class GerenciadorClientes implements PesquisaCliente {
 
     public void cadastrarCliente(){
         Scanner prompt = new Scanner(System.in);
-        System.out.println("Escolha o tipo de Cliente: 1. Pessoa Física | 2. Cliente VIP");
+        System.out.println("Escolha o tipo de Cliente: 1. Cliente Comum | 2. Cliente VIP");
         int tipoCliente = prompt.nextInt();
         prompt.nextLine();
 
-        Cliente cliente = null;
-        switch(tipoCliente){
-            case 1:
-                System.out.println("Nome: ");
-                String nomePF = prompt.nextLine();
-                System.out.println("Sobrenome: ");
-                String sobrenomePF = prompt.nextLine();
-                String nomeCompletoPF = nomePF + " " + sobrenomePF;
-
-                if(clienteCadastrado(nomeCompletoPF)) {
-                    System.out.println("Cliente já cadastrado!");
+        try {
+            Cliente cliente = null;
+            switch(tipoCliente){
+                case 1:
+                    cliente = criarClienteComum(prompt);
                     break;
-                }
 
-                System.out.println("CPF: ");
-                String cpfPF = prompt.nextLine();
-
-                if(cpfCadastrado(cpfPF)){
-                    System.out.println("CPF já cadastrado!");
+                case 2:
+                    cliente = criarClienteVIP(prompt);
                     break;
-                }
+                default:
+                    System.out.println("Opção inválida! Escolha uma opção válida!");
+                    return;
+            }
 
-                cliente = new PessoaFisica(nomeCompletoPF, cpfPF);
-                break;
-
-            case 2:
-                System.out.println("Nome: ");
-                String nomeVIP = prompt.nextLine();
-                System.out.println("Sobrenome: ");
-                String sobrenomeVIP = prompt.nextLine();
-                String nomeCompletoVIP = nomeVIP + " " + sobrenomeVIP;
-
-                if (clienteCadastrado(nomeCompletoVIP)) {
-                    System.out.println("Cliente VIP já cadastrado!");
-                    break;
-                }
-
-                System.out.println("CPF: ");
-                String cpfVIP = prompt.nextLine();
-
-                if(cpfCadastrado(cpfVIP)){
-                    System.out.println("CPF já cadastrado!");
-                    break;
-                }
-
-                cliente = new ClienteVIP(nomeCompletoVIP, cpfVIP);
-                break;
-            default:
-                System.out.println("Opção inválida! Escolha uma opção válida!");
-                break;
+            if(cliente != null) {
+                clientes.add(cliente);
+                System.out.println("Cliente cadastrado com sucesso: " + cliente.getNome());
+            }
+        } catch(ClienteJaCadastradoException | CPFJaCadastradoException e) {
+            System.out.println(e.getMessage());
         }
 
-        if(cliente != null) {
-            clientes.add(cliente);
-            System.out.println("CLiente cadastrado com sucesso: " + cliente.getNome());
-        }
     }
 
-    private boolean clienteCadastrado(String nome){
+    public Cliente criarClienteComum(Scanner prompt) throws ClienteJaCadastradoException, CPFJaCadastradoException{
+        System.out.println("Nome: ");
+        String nomeComum = prompt.nextLine();
+        System.out.println("Sobrenome: ");
+        String sobrenomeComum = prompt.nextLine();
+        String nomeCompletoComum = nomeComum + " " + sobrenomeComum;
+
+        verificarClienteCadastrado(nomeCompletoComum);
+
+        System.out.println("CPF: ");
+        String cpfComum = prompt.nextLine();
+
+        verificarCPFCadastrado(cpfComum);
+
+        return new ClienteComum(nomeCompletoComum, cpfComum);
+    }
+
+    public Cliente criarClienteVIP(Scanner prompt) throws ClienteJaCadastradoException, CPFJaCadastradoException {
+        System.out.println("Nome: ");
+        String nomeVIP = prompt.nextLine();
+        System.out.println("Sobrenome: ");
+        String sobrenomeVIP = prompt.nextLine();
+        String nomeCompletoVIP = nomeVIP + " " + sobrenomeVIP;
+
+        verificarClienteCadastrado(nomeCompletoVIP);
+
+        System.out.println("CPF: ");
+        String cpfVIP = prompt.nextLine();
+
+        verificarCPFCadastrado(cpfVIP);
+
+        return new ClienteVIP(nomeCompletoVIP, cpfVIP);
+    }
+
+    public void verificarClienteCadastrado(String nome) throws ClienteJaCadastradoException{
         for(Cliente cliente : clientes) {
             if(cliente.getNome().equalsIgnoreCase(nome)){
-                return true;
+                throw new ClienteJaCadastradoException("Cliente já cadastrado!");
             }
         }
-        return false;
     }
 
-    private boolean cpfCadastrado(String cpf){
+    private void verificarCPFCadastrado(String cpf) throws CPFJaCadastradoException{
         for(Cliente cliente : clientes){
             if(cliente.getCpf().equalsIgnoreCase(cpf)){
-                return true;
+                throw new CPFJaCadastradoException("CPF já cadastrado!");
             }
         }
-        return false;
     }
 
     public void removerCliente() {
