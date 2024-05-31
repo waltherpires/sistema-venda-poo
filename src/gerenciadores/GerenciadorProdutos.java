@@ -1,3 +1,11 @@
+package gerenciadores;
+
+import classes.produtos.Produto;
+import classes.produtos.ProdutoEletronico;
+import classes.produtos.ProdutoRoupa;
+import exceptions.ProdutoNaoEncontradoException;
+import interfaces.PesquisaProduto;
+
 import java.util.*;
 
 public class GerenciadorProdutos implements PesquisaProduto {
@@ -85,7 +93,7 @@ public class GerenciadorProdutos implements PesquisaProduto {
 
         if(produto != null) {
             produtos.add(produto);
-            System.out.println("Produto: " + produto.getNome() + " foi cadastrado com sucesso!");
+            System.out.println("classes.produtos.Produto: " + produto.getNome() + " foi cadastrado com sucesso!");
         }
     }
 
@@ -113,7 +121,7 @@ public class GerenciadorProdutos implements PesquisaProduto {
 
         if(produtoRemover != null){
             produtos.remove(produtoRemover);
-            System.out.println("Produto: " + produtoRemover.getNome() + " foi removido!");
+            System.out.println("classes.produtos.Produto: " + produtoRemover.getNome() + " foi removido!");
         } else {
             System.out.println("Não foi possível remover o produto escolhido!");
         }
@@ -125,6 +133,6 @@ public class GerenciadorProdutos implements PesquisaProduto {
                 return produto;
             }
         }
-        throw new ProdutoNaoEncontradoException("Produto não encontrado: " + nome);
+        throw new ProdutoNaoEncontradoException("classes.produtos.Produto não encontrado: " + nome);
     }
 }

@@ -1,3 +1,14 @@
+package gerenciadores;
+
+import classes.clientes.Cliente;
+import classes.produtos.Produto;
+import classes.vendas.Venda;
+import classes.vendas.VendaCredito;
+import classes.vendas.VendaDebito;
+import exceptions.ClienteNaoEncontradoException;
+import exceptions.ProdutoNaoEncontradoException;
+import exceptions.VendaInvalidaException;
+
 import java.util.*;
 
 public class GerenciadorVendas {
@@ -5,16 +16,16 @@ public class GerenciadorVendas {
     private GerenciadorProdutos gerenciadorProdutos;
     private GerenciadorClientes gerenciadorClientes;
 
-    public void menuVenda(){
+    public void menuVenda() {
         Scanner prompt = new Scanner(System.in);
         boolean sair = false;
 
-        while(!sair) {
+        while (!sair) {
             System.out.println("1. Listar Vendas | 2. Adicionar Venda | 3. Sair");
             int escolha = prompt.nextInt();
             prompt.nextLine();
 
-            switch (escolha){
+            switch (escolha) {
                 case 1:
                     listarVendas();
                     break;
@@ -28,7 +39,6 @@ public class GerenciadorVendas {
                     System.out.println("Opção inválida. Escolha uma opção válida!");
             }
         }
-
     }
 
     public void registrarVenda(Venda venda) throws VendaInvalidaException {
@@ -59,11 +69,11 @@ public class GerenciadorVendas {
             Cliente cliente = gerenciadorClientes.pesquisarCliente(nomeCliente);
             Venda venda;
             if (tipoVenda == 1) {
-                venda = new VendaCredito(cliente, produto, dataVenda);
-            } else if (tipoVenda == 2) {
                 venda = new VendaDebito(cliente, produto, dataVenda);
-            } else {
+            } else if (tipoVenda == 2) {
                 venda = new VendaCredito(cliente, produto, dataVenda);
+            } else {
+                throw new IllegalArgumentException("Tipo de venda inválido");
             }
             registrarVenda(venda);
             System.out.println("Venda Realizada com sucesso!");

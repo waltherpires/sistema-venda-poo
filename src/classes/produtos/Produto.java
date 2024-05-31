@@ -1,3 +1,5 @@
+package classes.produtos;
+
 public abstract class Produto {
     private String nome;
     private double preco;
@@ -16,13 +18,4 @@ public abstract class Produto {
     }
 
     public abstract String toString();
-
-    public boolean equals(Object o) {
-        Produto a = (Produto) o;
-        return this.nome.equals(a.getNome());
-    }
-
-    public int hashCode(){
-        return this.nome.hashCode();
-    }
 }

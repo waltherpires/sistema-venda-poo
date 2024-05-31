@@ -1,3 +1,7 @@
+import gerenciadores.GerenciadorClientes;
+import gerenciadores.GerenciadorProdutos;
+import gerenciadores.GerenciadorVendas;
+
 import java.util.Scanner;
 
 public class Main {

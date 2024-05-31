@@ -1,3 +1,13 @@
+package gerenciadores;
+
+import classes.clientes.Cliente;
+import classes.clientes.ClienteComum;
+import classes.clientes.ClienteVIP;
+import exceptions.CPFJaCadastradoException;
+import exceptions.ClienteJaCadastradoException;
+import exceptions.ClienteNaoEncontradoException;
+import interfaces.PesquisaCliente;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -73,7 +83,7 @@ public class GerenciadorClientes implements PesquisaCliente {
 
     }
 
-    public Cliente criarClienteComum(Scanner prompt) throws ClienteJaCadastradoException, CPFJaCadastradoException{
+    public Cliente criarClienteComum(Scanner prompt) throws ClienteJaCadastradoException, CPFJaCadastradoException {
         System.out.println("Nome: ");
         String nomeComum = prompt.nextLine();
         System.out.println("Sobrenome: ");
@@ -107,7 +117,7 @@ public class GerenciadorClientes implements PesquisaCliente {
         return new ClienteVIP(nomeCompletoVIP, cpfVIP);
     }
 
-    public void verificarClienteCadastrado(String nome) throws ClienteJaCadastradoException{
+    public void verificarClienteCadastrado(String nome) throws ClienteJaCadastradoException {
         for(Cliente cliente : clientes) {
             if(cliente.getNome().equalsIgnoreCase(nome)){
                 throw new ClienteJaCadastradoException("Cliente já cadastrado!");
@@ -115,7 +125,7 @@ public class GerenciadorClientes implements PesquisaCliente {
         }
     }
 
-    private void verificarCPFCadastrado(String cpf) throws CPFJaCadastradoException{
+    private void verificarCPFCadastrado(String cpf) throws CPFJaCadastradoException {
         for(Cliente cliente : clientes){
             if(cliente.getCpf().equalsIgnoreCase(cpf)){
                 throw new CPFJaCadastradoException("CPF já cadastrado!");
@@ -141,7 +151,7 @@ public class GerenciadorClientes implements PesquisaCliente {
         }
     }
 
-    public Cliente pesquisarCliente(String nome) throws ClienteNaoEncontradoException{
+    public Cliente pesquisarCliente(String nome) throws ClienteNaoEncontradoException {
         for(Cliente cliente : clientes) {
             if(cliente.getNome().equalsIgnoreCase(nome)) {
                 return cliente;

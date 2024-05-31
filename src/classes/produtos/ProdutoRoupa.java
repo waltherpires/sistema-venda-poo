@@ -1,3 +1,5 @@
+package classes.produtos;
+
 public class ProdutoRoupa extends Produto {
     public ProdutoRoupa(String nome, double preco) {
         super(nome, preco);

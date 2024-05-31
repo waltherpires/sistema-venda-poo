@@ -1,3 +1,8 @@
+package classes.vendas;
+
+import classes.clientes.Cliente;
+import classes.produtos.Produto;
+
 import java.util.Date;
 
 public abstract class Venda {
