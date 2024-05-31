@@ -32,7 +32,7 @@ public class GerenciadorProdutos implements PesquisaProduto {
     }
 
     public void cadastrarProduto() {
-        System.out.println("Escolha o tipo de produto: 1. Eletrônico | 2. Medicamento Veterinario | 3. Sair");
+        System.out.println("Escolha o tipo de produto: 1. Eletrônico | 2. Roupas | 3. Sair");
         Scanner prompt = new Scanner(System.in);
         int escolhaProduto = prompt.nextInt();
         prompt.nextLine();
@@ -60,20 +60,20 @@ public class GerenciadorProdutos implements PesquisaProduto {
 
             case 2:
                 System.out.println("Nome do Produto: ");
-                String nomeMedicamento = prompt.nextLine();
-                boolean medicamentoJaCadastrado = false;
-                for(Produto medicamento : produtos) {
-                    if (medicamento.getNome().equalsIgnoreCase(nomeMedicamento)) {
-                        medicamentoJaCadastrado = true;
+                String nomeRoupa = prompt.nextLine();
+                boolean roupaJaCadastrada = false;
+                for(Produto roupa : produtos) {
+                    if (roupa.getNome().equalsIgnoreCase(nomeRoupa)) {
+                        roupaJaCadastrada = true;
                         System.out.println("Produto já cadastrado!");
                         break;
                     }
                 }
-                if(!medicamentoJaCadastrado){
+                if(!roupaJaCadastrada){
                         System.out.println("Preço do Produto: ");
-                        double valorMedicamento = prompt.nextDouble();
+                        double valorRoupa = prompt.nextDouble();
                         prompt.nextLine();
-                        produto = new MedicamentoVeterinario(nomeMedicamento, valorMedicamento);
+                        produto = new ProdutoRoupa(nomeRoupa, valorRoupa);
                 }
                 break;
             case 3:
