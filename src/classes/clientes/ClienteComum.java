@@ -6,6 +6,6 @@ public class ClienteComum extends Cliente {
     }
 
     public String toString() {
-        return "Cliente Comum{ " + "Nome: " + getNome()  + " |  CPF: " + getCpf() + '}';
+        return "Cliente Comum { " + "Nome: " + getNome()  + " |  CPF: " + getCpf() + " }";
     }
 }

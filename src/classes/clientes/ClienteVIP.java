@@ -6,6 +6,6 @@ public class ClienteVIP extends Cliente {
     }
 
     public String toString()  {
-        return "Cliente VIP { " + "Nome: " + getNome()  + " |  CPF: " + getCpf() + '}';
+        return "Cliente VIP { " + "Nome: " + getNome()  + " |  CPF: " + getCpf() + " }";
     }
 }

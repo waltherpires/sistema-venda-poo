@@ -3,98 +3,120 @@ package gerenciadores;
 import classes.produtos.Produto;
 import classes.produtos.ProdutoEletronico;
 import classes.produtos.ProdutoRoupa;
+import exceptions.EscolhaInvalidaException;
+import exceptions.ProdutoJaCadastradoException;
 import exceptions.ProdutoNaoEncontradoException;
+import interfaces.Menu;
 import interfaces.PesquisaProduto;
 
 import java.util.*;
 
-public class GerenciadorProdutos implements PesquisaProduto {
+public class GerenciadorProdutos implements PesquisaProduto, Menu {
     private Set<Produto> produtos = new HashSet<>();
 
-    public void menuProdutos() {
+    public void menu() {
         Scanner prompt = new Scanner(System.in);
         boolean sair = false;
 
         while(!sair) {
-            System.out.println("1. Listar Produtos | 2. Cadastrar Produto | 3. Remover produto | 4. Voltar ");
-            int escolha = prompt.nextInt();
-            prompt.nextLine();
+            System.out.println("----------------------------------------PRODUTOS----------------------------------------");
+            System.out.println("1. Listar Produtos | 2. Cadastrar Produto | 3. Remover produto | 4. Voltar (Menu Principal)");
 
-            switch(escolha) {
-                case 1:
-                    listarProdutos();
-                    break;
-                case 2:
-                    cadastrarProduto();
-                    break;
-                case 3:
-                    removerProduto();
-                    break;
-                case 4:
-                    sair = true;
-                    break;
-                default:
-                    System.out.println("Escolha inválida! Faça uma escolha válida");
+            try {
+                int escolha = prompt.nextInt();
+                prompt.nextLine();
+
+                switch(escolha) {
+                    case 1:
+                        listarProdutos();
+                        break;
+                    case 2:
+                        cadastrarProduto();
+                        break;
+                    case 3:
+                        removerProduto();
+                        break;
+                    case 4:
+                        sair = true;
+                        break;
+                    default:
+                        throw new EscolhaInvalidaException("Opção Inválida! Escolha uma opção válida!");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Opção Inválida! Escolha uma opção válida!");
+                prompt.nextLine();
+            } catch (EscolhaInvalidaException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
 
     public void cadastrarProduto() {
-        System.out.println("Escolha o tipo de produto: 1. Eletrônico | 2. Roupas | 3. Sair");
+        System.out.println("Escolha o tipo de produto: 1. Eletrônico | 2. Roupas | 3. Voltar (Menu Produtos)");
         Scanner prompt = new Scanner(System.in);
         int escolhaProduto = prompt.nextInt();
         prompt.nextLine();
 
-        Produto produto = null;
-        switch(escolhaProduto) {
-            case 1:
-                System.out.println("Nome do Produto: ");
-                String nomeEletronico = prompt.nextLine();
-                boolean eletronicoJaCadastrado = false;
-                for(Produto produtoEletronico : produtos) {
-                    if (produtoEletronico.getNome().equalsIgnoreCase(nomeEletronico)) {
-                        eletronicoJaCadastrado = true;
-                        System.out.println("Produto já cadastrado!");
-                        break;
-                    }
-                }
-                    if(!eletronicoJaCadastrado) {
-                        System.out.println("Preço do Produto: ");
-                        double valorEletronico = prompt.nextDouble();
-                        prompt.nextLine();
-                        produto = new ProdutoEletronico(nomeEletronico, valorEletronico);
-                    }
+        Produto produto;
+
+        try {
+            switch(escolhaProduto) {
+                case 1:
+                    produto = criarProdutoEletronico(prompt);
                     break;
 
-            case 2:
-                System.out.println("Nome do Produto: ");
-                String nomeRoupa = prompt.nextLine();
-                boolean roupaJaCadastrada = false;
-                for(Produto roupa : produtos) {
-                    if (roupa.getNome().equalsIgnoreCase(nomeRoupa)) {
-                        roupaJaCadastrada = true;
-                        System.out.println("Produto já cadastrado!");
-                        break;
-                    }
-                }
-                if(!roupaJaCadastrada){
-                        System.out.println("Preço do Produto: ");
-                        double valorRoupa = prompt.nextDouble();
-                        prompt.nextLine();
-                        produto = new ProdutoRoupa(nomeRoupa, valorRoupa);
-                }
-                break;
-            case 3:
-                return;
-            default:
-                System.out.println("Opção inválida! Escolha uma opção válida!");
-                return;
-        }
+                case 2:
+                    produto = criarProdutoRoupa(prompt);
+                    break;
 
-        if(produto != null) {
+                case 3:
+                    return;
+                default:
+                    throw new EscolhaInvalidaException("Opção Inválida! Escolha uma opção válida!");
+
+            }
+
             produtos.add(produto);
-            System.out.println("classes.produtos.Produto: " + produto.getNome() + " foi cadastrado com sucesso!");
+            System.out.println("Produto: " + produto.getNome() + " foi cadastrado com sucesso!");
+
+        }  catch (InputMismatchException e) {
+            System.out.println("Opção Inválida! Escolha uma opção válida!");
+            prompt.nextLine();
+        } catch(ProdutoJaCadastradoException | EscolhaInvalidaException e) {
+            System.out.println(e.getMessage());
         }
+    }
+
+    public void verificarProdutoCadastrado(String nome) throws ProdutoJaCadastradoException {
+        for (Produto produto : produtos) {
+            if(produto.getNome().equalsIgnoreCase(nome)) {
+                throw new ProdutoJaCadastradoException("Produto já cadastrado: " + nome + "!");
+            }
+        }
+    }
+
+    public Produto criarProdutoEletronico(Scanner prompt) throws ProdutoJaCadastradoException {
+        System.out.println("Nome do Produto: ");
+        String nomeEletronico = prompt.nextLine();
+        verificarProdutoCadastrado(nomeEletronico);
+
+        System.out.println("Preço do Produto: ");
+        double valorEletronico = prompt.nextDouble();
+        prompt.nextLine();
+
+        return new ProdutoEletronico(nomeEletronico, valorEletronico);
+    }
+
+    public Produto criarProdutoRoupa(Scanner prompt) throws ProdutoJaCadastradoException {
+        System.out.println("Nome do Produto: ");
+        String nomeRoupa = prompt.nextLine();
+        verificarProdutoCadastrado(nomeRoupa);
+
+        System.out.println("Preço do Produto: ");
+        double valorRoupa = prompt.nextDouble();
+        prompt.nextLine();
+
+        return new ProdutoRoupa(nomeRoupa, valorRoupa);
     }
 
     public void listarProdutos(){
@@ -121,7 +143,7 @@ public class GerenciadorProdutos implements PesquisaProduto {
 
         if(produtoRemover != null){
             produtos.remove(produtoRemover);
-            System.out.println("classes.produtos.Produto: " + produtoRemover.getNome() + " foi removido!");
+            System.out.println("Produto: " + produtoRemover.getNome() + " foi removido!");
         } else {
             System.out.println("Não foi possível remover o produto escolhido!");
         }
@@ -133,6 +155,6 @@ public class GerenciadorProdutos implements PesquisaProduto {
                 return produto;
             }
         }
-        throw new ProdutoNaoEncontradoException("classes.produtos.Produto não encontrado: " + nome);
+        throw new ProdutoNaoEncontradoException("Produto não encontrado: " + nome);
     }
 }

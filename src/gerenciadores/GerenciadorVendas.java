@@ -6,37 +6,53 @@ import classes.vendas.Venda;
 import classes.vendas.VendaCredito;
 import classes.vendas.VendaDebito;
 import exceptions.ClienteNaoEncontradoException;
+import exceptions.EscolhaInvalidaException;
 import exceptions.ProdutoNaoEncontradoException;
 import exceptions.VendaInvalidaException;
+import interfaces.Menu;
 
 import java.util.*;
 
-public class GerenciadorVendas {
+public class GerenciadorVendas implements Menu {
     List<Venda> vendas = new LinkedList<>();
     private GerenciadorProdutos gerenciadorProdutos;
     private GerenciadorClientes gerenciadorClientes;
 
-    public void menuVenda() {
+    public GerenciadorVendas(GerenciadorProdutos gerenciadorProdutos, GerenciadorClientes gerenciadorClientes) {
+        this.gerenciadorProdutos = gerenciadorProdutos;
+        this.gerenciadorClientes = gerenciadorClientes;
+    }
+
+    public void menu() {
         Scanner prompt = new Scanner(System.in);
         boolean sair = false;
 
         while (!sair) {
-            System.out.println("1. Listar Vendas | 2. Adicionar Venda | 3. Sair");
-            int escolha = prompt.nextInt();
-            prompt.nextLine();
+            System.out.println("----------------------------------------VENDAS----------------------------------------");
+            System.out.println("1. Listar Vendas | 2. Adicionar Venda | 3. Voltar (Menu Principal)");
 
-            switch (escolha) {
-                case 1:
-                    listarVendas();
-                    break;
-                case 2:
-                    criarVenda();
-                    break;
-                case 3:
-                    sair = true;
-                    break;
-                default:
-                    System.out.println("Opção inválida. Escolha uma opção válida!");
+            try {
+                int escolha = prompt.nextInt();
+                prompt.nextLine();
+
+                switch (escolha) {
+                    case 1:
+                        listarVendas();
+                        break;
+                    case 2:
+                        criarVenda();
+                        break;
+                    case 3:
+                        sair = true;
+                        break;
+                    default:
+                        throw new EscolhaInvalidaException("Opção Inválida! Escolha uma opção válida!");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Opção Inválida! Escolha uma opção válida!");
+                prompt.nextLine();
+            } catch(EscolhaInvalidaException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -51,38 +67,48 @@ public class GerenciadorVendas {
     public void criarVenda() {
         Scanner prompt = new Scanner(System.in);
 
-        System.out.println("Pagamento: 1. Débito | 2. Crédito");
-        int tipoVenda = prompt.nextInt();
-        prompt.nextLine();
-
-        System.out.println("Nome do Cliente: ");
-        String nomeCliente = prompt.nextLine();
-
-        System.out.println("Nome do Produto: ");
-        String nomeProduto = prompt.nextLine();
-
-        long currentTimeInMillis = System.currentTimeMillis();
-        Date dataVenda = new Date(currentTimeInMillis);
-
         try {
+            System.out.println("Pagamento: 1. Débito | 2. Crédito");
+            int tipoVenda = prompt.nextInt();
+            prompt.nextLine();
+
+            if(tipoVenda > 2) {
+                throw new VendaInvalidaException("Tipo de venda inválido");
+            }
+
+            System.out.println("Nome do Cliente: ");
+            String nomeCliente = prompt.nextLine();
+
+            System.out.println("Nome do Produto: ");
+            String nomeProduto = prompt.nextLine();
+
+            long currentTimeInMillis = System.currentTimeMillis();
+            Date dataVenda = new Date(currentTimeInMillis);
+
+
             Produto produto = gerenciadorProdutos.pesquisarProduto(nomeProduto);
             Cliente cliente = gerenciadorClientes.pesquisarCliente(nomeCliente);
             Venda venda;
-            if (tipoVenda == 1) {
-                venda = new VendaDebito(cliente, produto, dataVenda);
-            } else if (tipoVenda == 2) {
-                venda = new VendaCredito(cliente, produto, dataVenda);
-            } else {
-                throw new IllegalArgumentException("Tipo de venda inválido");
+
+            switch(tipoVenda) {
+                case 1:
+                    venda = new VendaDebito(cliente, produto, dataVenda);
+                    break;
+                case 2:
+                    venda = new VendaCredito(cliente, produto, dataVenda);
+                    break;
+                default:
+                    throw new VendaInvalidaException("Tipo de venda inválido");
             }
+
             registrarVenda(venda);
             System.out.println("Venda Realizada com sucesso!");
-        } catch (ProdutoNaoEncontradoException e) {
-            System.out.println("Erro ao realizar venda (Produto): " + e.getMessage());
-        } catch (VendaInvalidaException i) {
-            System.out.println("Erro ao realizar venda (Venda): " + i.getMessage());
-        } catch (ClienteNaoEncontradoException c) {
-            System.out.println("Erro ao realizar venda (Cliente): " + c.getMessage());
+
+        } catch (InputMismatchException e) {
+            System.out.println("Opção Inválida! Escolha uma opção válida!");
+            prompt.nextLine();
+        } catch (ProdutoNaoEncontradoException | ClienteNaoEncontradoException | VendaInvalidaException e) {
+            System.out.println("Erro ao realizar a venda: " + e.getMessage());
         }
     }
 

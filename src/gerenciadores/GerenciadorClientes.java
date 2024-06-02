@@ -6,39 +6,52 @@ import classes.clientes.ClienteVIP;
 import exceptions.CPFJaCadastradoException;
 import exceptions.ClienteJaCadastradoException;
 import exceptions.ClienteNaoEncontradoException;
+import exceptions.EscolhaInvalidaException;
+import interfaces.Menu;
 import interfaces.PesquisaCliente;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class GerenciadorClientes implements PesquisaCliente {
+public class GerenciadorClientes implements PesquisaCliente, Menu {
     private List <Cliente> clientes = new ArrayList<>();
 
-    public void menuClientes(){
+    public void menu(){
         Scanner prompt = new Scanner(System.in);
         boolean sair = false;
 
         while(!sair) {
+            System.out.println("----------------------------------------CLIENTES----------------------------------------");
             System.out.println("1. Listar Clientes | 2. Cadastrar Cliente | 3. Remover Cliente | 4. Sair ");
-            int escolha = prompt.nextInt();
-            prompt.nextLine();
-            switch(escolha){
-                case 1:
-                    listarClientes();
-                    break;
-                case 2:
-                    cadastrarCliente();
-                    break;
-                case 3:
-                    removerCliente();
-                    break;
-                case 4:
-                    sair = true;
-                    break;
-                default:
-                    System.out.println("Opção inválida! Escolha uma opção válida");
+
+            try {
+                int escolha = prompt.nextInt();
+                prompt.nextLine();
+                switch(escolha){
+                    case 1:
+                        listarClientes();
+                        break;
+                    case 2:
+                        cadastrarCliente();
+                        break;
+                    case 3:
+                        removerCliente();
+                        break;
+                    case 4:
+                        sair = true;
+                        break;
+                    default:
+                        throw new EscolhaInvalidaException("Opção Inválida! Escolha uma opção válida!");
+                }
+            }catch (InputMismatchException e) {
+                System.out.println("Opção Inválida! Escolha uma opção válida!");
+                prompt.nextLine();
+            } catch (EscolhaInvalidaException e) {
+                System.out.println(e.getMessage());
             }
+
         }
     }
 
@@ -54,32 +67,42 @@ public class GerenciadorClientes implements PesquisaCliente {
 
     public void cadastrarCliente(){
         Scanner prompt = new Scanner(System.in);
-        System.out.println("Escolha o tipo de Cliente: 1. Cliente Comum | 2. Cliente VIP");
-        int tipoCliente = prompt.nextInt();
-        prompt.nextLine();
+        boolean entradaValida = false;
 
-        try {
-            Cliente cliente = null;
-            switch(tipoCliente){
-                case 1:
-                    cliente = criarClienteComum(prompt);
-                    break;
+        while(!entradaValida) {
+            System.out.println("-------------------------------------CADASTRAR CLIENTES-------------------------------------");
+            System.out.println("Escolha o tipo de Cliente: 1. Cliente Comum | 2. Cliente VIP");
 
-                case 2:
-                    cliente = criarClienteVIP(prompt);
-                    break;
-                default:
-                    System.out.println("Opção inválida! Escolha uma opção válida!");
-                    return;
+            try {
+                int tipoCliente = prompt.nextInt();
+                prompt.nextLine();
+                Cliente cliente = null;
+
+                switch(tipoCliente){
+                    case 1:
+                        cliente = criarClienteComum(prompt);
+                        break;
+
+                    case 2:
+                        cliente = criarClienteVIP(prompt);
+                        break;
+                    default:
+                        throw new EscolhaInvalidaException("Opção Inválida! Escolha uma opção válida!");
+                }
+
+                if(cliente != null) {
+                    clientes.add(cliente);
+                    System.out.println("Cliente cadastrado com sucesso: " + cliente.getNome());
+                    entradaValida = true;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Opção Inválida! Escolha uma opção válida!");
+                prompt.nextLine();
+            } catch(ClienteJaCadastradoException | CPFJaCadastradoException | EscolhaInvalidaException e) {
+                System.out.println(e.getMessage());
             }
-
-            if(cliente != null) {
-                clientes.add(cliente);
-                System.out.println("Cliente cadastrado com sucesso: " + cliente.getNome());
-            }
-        } catch(ClienteJaCadastradoException | CPFJaCadastradoException e) {
-            System.out.println(e.getMessage());
         }
+
 
     }
 
