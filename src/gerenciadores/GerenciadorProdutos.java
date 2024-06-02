@@ -12,7 +12,7 @@ import interfaces.PesquisaProduto;
 import java.util.*;
 
 public class GerenciadorProdutos implements PesquisaProduto, Menu {
-    private Set<Produto> produtos = new HashSet<>();
+    Set<Produto> produtos = new HashSet<>();
 
     public void menu() {
         Scanner prompt = new Scanner(System.in);
@@ -133,20 +133,20 @@ public class GerenciadorProdutos implements PesquisaProduto, Menu {
     public void removerProduto(){
         Scanner prompt = new Scanner(System.in);
         System.out.println("Digite o nome do produto a ser removido:");
-        String nome = prompt.nextLine();;
-        Produto produtoRemover = null;
-        for(Produto produto : produtos){
-            if(produto.getNome().equalsIgnoreCase(nome)){
-                produtoRemover = produto;
+
+        try {
+            String nome = prompt.nextLine();;
+            Produto produtoRemover;
+            produtoRemover = pesquisarProduto(nome);
+
+            if(produtoRemover != null){
+                produtos.remove(produtoRemover);
+                System.out.println("Produto: " + produtoRemover.getNome() + " foi removido!");
             }
+        } catch (ProdutoNaoEncontradoException e) {
+            System.out.println(e.getMessage());
         }
 
-        if(produtoRemover != null){
-            produtos.remove(produtoRemover);
-            System.out.println("Produto: " + produtoRemover.getNome() + " foi removido!");
-        } else {
-            System.out.println("Não foi possível remover o produto escolhido!");
-        }
     }
 
     public Produto pesquisarProduto(String nome) throws ProdutoNaoEncontradoException {

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GerenciadorClientes implements PesquisaCliente, Menu {
-    private List <Cliente> clientes = new ArrayList<>();
+    List <Cliente> clientes = new ArrayList<>();
 
     public void menu(){
         Scanner prompt = new Scanner(System.in);
@@ -159,19 +159,20 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
     public void removerCliente() {
         Scanner prompt = new Scanner(System.in);
         System.out.println("Digite o NOME COMPLETO do cliente que deseja remover: ");
-        String nomeRemover = prompt.nextLine();
-        Cliente cliente = null;
-        for(Cliente clienteRemover : clientes) {
-            if(clienteRemover.getNome().equalsIgnoreCase(nomeRemover)){
-                cliente = clienteRemover;
+
+        try {
+            String nomeRemover = prompt.nextLine();
+            Cliente cliente = null;
+            cliente = pesquisarCliente(nomeRemover);
+
+            if (cliente != null) {
+                clientes.remove(cliente);
+                System.out.println("Cliente: " + cliente.getNome() + " removido!");
             }
+        } catch (ClienteNaoEncontradoException e) {
+            System.out.println(e.getMessage());
         }
-        if (cliente != null) {
-            clientes.remove(cliente);
-            System.out.println("Cliente: " + cliente.getNome() + " removido!");
-        } else {
-            System.out.println("Não há um cliente com esse nome");
-        }
+
     }
 
     public Cliente pesquisarCliente(String nome) throws ClienteNaoEncontradoException {

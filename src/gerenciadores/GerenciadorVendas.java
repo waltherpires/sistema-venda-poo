@@ -5,10 +5,7 @@ import classes.produtos.Produto;
 import classes.vendas.Venda;
 import classes.vendas.VendaCredito;
 import classes.vendas.VendaDebito;
-import exceptions.ClienteNaoEncontradoException;
-import exceptions.EscolhaInvalidaException;
-import exceptions.ProdutoNaoEncontradoException;
-import exceptions.VendaInvalidaException;
+import exceptions.*;
 import interfaces.Menu;
 
 import java.util.*;
@@ -40,6 +37,9 @@ public class GerenciadorVendas implements Menu {
                         listarVendas();
                         break;
                     case 2:
+                        if(gerenciadorProdutos.produtos.isEmpty() || gerenciadorClientes.clientes.isEmpty()){
+                            throw new ListaVaziaException("Erro ao Adicionar Venda: Sem clientes ou produtos cadastrados");
+                        }
                         criarVenda();
                         break;
                     case 3:
@@ -51,7 +51,7 @@ public class GerenciadorVendas implements Menu {
             } catch (InputMismatchException e) {
                 System.out.println("Opção Inválida! Escolha uma opção válida!");
                 prompt.nextLine();
-            } catch(EscolhaInvalidaException e) {
+            } catch(EscolhaInvalidaException | ListaVaziaException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -108,7 +108,7 @@ public class GerenciadorVendas implements Menu {
             System.out.println("Opção Inválida! Escolha uma opção válida!");
             prompt.nextLine();
         } catch (ProdutoNaoEncontradoException | ClienteNaoEncontradoException | VendaInvalidaException e) {
-            System.out.println("Erro ao realizar a venda: " + e.getMessage());
+            System.out.println("Erro ao realizar a venda { " + e.getMessage() + " }");
         }
     }
 
