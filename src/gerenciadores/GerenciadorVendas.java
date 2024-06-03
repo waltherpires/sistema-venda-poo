@@ -82,6 +82,10 @@ public class GerenciadorVendas implements Menu {
             System.out.println("Nome do Produto: ");
             String nomeProduto = prompt.nextLine();
 
+            System.out.println("Deseja aplicar desconto? 1. Sim | 2. Não ");
+            int aplicarDesconto = prompt.nextInt();
+            prompt.nextLine();
+
             long currentTimeInMillis = System.currentTimeMillis();
             Date dataVenda = new Date(currentTimeInMillis);
 
@@ -95,6 +99,13 @@ public class GerenciadorVendas implements Menu {
                     venda = new VendaDebito(cliente, produto, dataVenda);
                     break;
                 case 2:
+                    if(aplicarDesconto == 1){
+                        System.out.println("Qual a porcentagem do desconto? ");
+                        int desconto = prompt.nextInt();
+                        prompt.nextLine();
+                        venda = new VendaCredito(cliente, produto, dataVenda, desconto);
+                        break;
+                    }
                     venda = new VendaCredito(cliente, produto, dataVenda);
                     break;
                 default:
@@ -114,6 +125,9 @@ public class GerenciadorVendas implements Menu {
 
     public void listarVendas() {
         for (Venda venda : vendas) {
+            if(venda.getDesconto() != 0){
+
+            }
             System.out.println(venda);
         }
     }
