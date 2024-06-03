@@ -96,6 +96,13 @@ public class GerenciadorVendas implements Menu {
 
             switch(tipoVenda) {
                 case 1:
+                    if(aplicarDesconto == 1){
+                        System.out.println("Qual a porcentagem do desconto? ");
+                        int desconto = prompt.nextInt();
+                        prompt.nextLine();
+                        venda = new VendaDebito(cliente, produto, dataVenda, desconto);
+                        break;
+                    }
                     venda = new VendaDebito(cliente, produto, dataVenda);
                     break;
                 case 2:
