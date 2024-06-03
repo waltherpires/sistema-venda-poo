@@ -3,6 +3,7 @@ package gerenciadores;
 import classes.clientes.Cliente;
 import classes.clientes.ClienteComum;
 import classes.clientes.ClienteVIP;
+import dados.dadosClientes.DadosClientes;
 import exceptions.CPFJaCadastradoException;
 import exceptions.ClienteJaCadastradoException;
 import exceptions.ClienteNaoEncontradoException;
@@ -10,13 +11,23 @@ import exceptions.EscolhaInvalidaException;
 import interfaces.Menu;
 import interfaces.PesquisaCliente;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class GerenciadorClientes implements PesquisaCliente, Menu {
-    List <Cliente> clientes = new ArrayList<>();
+    List <Cliente> clientes;
+
+    public GerenciadorClientes(){
+        try {
+            this.clientes = DadosClientes.carregarClientes();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            this.clientes = new ArrayList<>();
+        }
+    }
 
     public void menu(){
         Scanner prompt = new Scanner(System.in);
@@ -76,7 +87,7 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
             try {
                 int tipoCliente = prompt.nextInt();
                 prompt.nextLine();
-                Cliente cliente = null;
+                Cliente cliente;
 
                 switch(tipoCliente){
                     case 1:
@@ -92,13 +103,14 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
 
                 if(cliente != null) {
                     clientes.add(cliente);
+                    DadosClientes.salvarClientes(clientes);
                     System.out.println("Cliente cadastrado com sucesso: " + cliente.getNome());
                     entradaValida = true;
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Opção Inválida! Escolha uma opção válida!");
                 prompt.nextLine();
-            } catch(ClienteJaCadastradoException | CPFJaCadastradoException | EscolhaInvalidaException e) {
+            } catch(ClienteJaCadastradoException | CPFJaCadastradoException | EscolhaInvalidaException | IOException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -107,17 +119,12 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
     }
 
     public Cliente criarClienteComum(Scanner prompt) throws ClienteJaCadastradoException, CPFJaCadastradoException {
-        System.out.println("Nome: ");
-        String nomeComum = prompt.nextLine();
-        System.out.println("Sobrenome: ");
-        String sobrenomeComum = prompt.nextLine();
-        String nomeCompletoComum = nomeComum + " " + sobrenomeComum;
-
+        System.out.println("Nome Completo: ");
+        String nomeCompletoComum = prompt.nextLine();
         verificarClienteCadastrado(nomeCompletoComum);
 
         System.out.println("CPF: ");
         String cpfComum = prompt.nextLine();
-
         verificarCPFCadastrado(cpfComum);
 
         return new ClienteComum(nomeCompletoComum, cpfComum);
@@ -125,16 +132,11 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
 
     public Cliente criarClienteVIP(Scanner prompt) throws ClienteJaCadastradoException, CPFJaCadastradoException {
         System.out.println("Nome: ");
-        String nomeVIP = prompt.nextLine();
-        System.out.println("Sobrenome: ");
-        String sobrenomeVIP = prompt.nextLine();
-        String nomeCompletoVIP = nomeVIP + " " + sobrenomeVIP;
-
+        String nomeCompletoVIP = prompt.nextLine();
         verificarClienteCadastrado(nomeCompletoVIP);
 
         System.out.println("CPF: ");
         String cpfVIP = prompt.nextLine();
-
         verificarCPFCadastrado(cpfVIP);
 
         return new ClienteVIP(nomeCompletoVIP, cpfVIP);
@@ -162,14 +164,15 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
 
         try {
             String nomeRemover = prompt.nextLine();
-            Cliente cliente = null;
+            Cliente cliente;
             cliente = pesquisarCliente(nomeRemover);
 
             if (cliente != null) {
                 clientes.remove(cliente);
+                DadosClientes.salvarClientes(clientes);
                 System.out.println("Cliente: " + cliente.getNome() + " removido!");
             }
-        } catch (ClienteNaoEncontradoException e) {
+        } catch (ClienteNaoEncontradoException | IOException e) {
             System.out.println(e.getMessage());
         }
 

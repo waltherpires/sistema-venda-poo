@@ -9,7 +9,7 @@ import java.util.List;
 public class DadosClientes {
     final static private String NOMEARQUIVO = "clientes.txt";
 
-    public void salvarClientes(List<Cliente> clientes) throws IOException {
+    public static void salvarClientes(List<Cliente> clientes) throws IOException {
         BufferedWriter arquivo = null;
         try {
             FileWriter caminho = new FileWriter(NOMEARQUIVO);
