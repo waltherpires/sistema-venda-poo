@@ -8,4 +8,9 @@ public class ClienteVIP extends Cliente {
     public String toString()  {
         return "Cliente VIP { " + "Nome: " + getNome()  + " |  CPF: " + getCpf() + " }";
     }
+
+    public String enviarDados() {
+        return "Comum," + getNome() + "," + getCpf();
+    }
+
 }

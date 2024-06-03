@@ -8,4 +8,8 @@ public class ClienteComum extends Cliente {
     public String toString() {
         return "Cliente Comum { " + "Nome: " + getNome()  + " |  CPF: " + getCpf() + " }";
     }
+
+    public String enviarDados() {
+        return "VIP," + getNome() + "," + getCpf();
+    }
 }
