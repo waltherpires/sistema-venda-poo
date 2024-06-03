@@ -29,14 +29,12 @@ public class VendaDebito extends Venda {
         if(getCliente() instanceof ClienteVIP) {
             return getProduto().getPreco();
         }
-
-        System.out.println("Venda com 5% de taxa");
         return getProduto().getPreco()*1.05;
     }
 
     public String valorTotal(){
         if(this.getDesconto() != 0){
-            return "Valor: " + calcularTotal(this.getDesconto());
+            return "Valor: " + calcularTotal(this.getDesconto()) + " (Desconto: " + this.getDesconto() + "%";
         }
         return "Valor: " + calcularTotal();
     }

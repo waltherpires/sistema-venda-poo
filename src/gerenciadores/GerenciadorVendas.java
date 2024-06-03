@@ -132,9 +132,6 @@ public class GerenciadorVendas implements Menu {
 
     public void listarVendas() {
         for (Venda venda : vendas) {
-            if(venda.getDesconto() != 0){
-
-            }
             System.out.println(venda);
         }
     }
