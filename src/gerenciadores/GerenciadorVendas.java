@@ -62,6 +62,7 @@ public class GerenciadorVendas implements Menu {
             throw new VendaInvalidaException("Venda invalida: " + venda);
         }
         vendas.add(venda);
+
     }
 
     public void criarVenda() {
@@ -76,18 +77,18 @@ public class GerenciadorVendas implements Menu {
                 throw new VendaInvalidaException("Tipo de venda inválido");
             }
 
-            System.out.println("Nome do Cliente: ");
+            System.out.print("Nome do Cliente: ");
             String nomeCliente = prompt.nextLine();
 
-            System.out.println("Nome do Produto: ");
+            System.out.print("Nome do Produto: ");
             String nomeProduto = prompt.nextLine();
 
             System.out.println("Deseja aplicar desconto? 1. Sim | 2. Não ");
             int aplicarDesconto = prompt.nextInt();
             prompt.nextLine();
 
-            long currentTimeInMillis = System.currentTimeMillis();
-            Date dataVenda = new Date(currentTimeInMillis);
+            long tempoMilisegundos = System.currentTimeMillis();
+            Date dataVenda = new Date(tempoMilisegundos);
 
 
             Produto produto = gerenciadorProdutos.pesquisarProduto(nomeProduto);
@@ -97,7 +98,7 @@ public class GerenciadorVendas implements Menu {
             switch(tipoVenda) {
                 case 1:
                     if(aplicarDesconto == 1){
-                        System.out.println("Qual a porcentagem do desconto? ");
+                        System.out.print("Qual a porcentagem do desconto? ");
                         int desconto = prompt.nextInt();
                         prompt.nextLine();
                         venda = new VendaDebito(cliente, produto, dataVenda, desconto);
@@ -107,7 +108,7 @@ public class GerenciadorVendas implements Menu {
                     break;
                 case 2:
                     if(aplicarDesconto == 1){
-                        System.out.println("Qual a porcentagem do desconto? ");
+                        System.out.print("Qual a porcentagem do desconto? ");
                         int desconto = prompt.nextInt();
                         prompt.nextLine();
                         venda = new VendaCredito(cliente, produto, dataVenda, desconto);

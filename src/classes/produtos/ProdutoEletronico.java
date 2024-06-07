@@ -5,6 +5,10 @@ public class ProdutoEletronico extends Produto {
         super(nome, preco);
     }
 
+    public String enviarDados() {
+        return "Eletronico," + getNome() + "," + getPreco();
+    }
+
     public String toString(){
         return "Eletronico: " + getNome()  + " | Preco: " + getPreco();
     }

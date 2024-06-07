@@ -3,16 +3,27 @@ package gerenciadores;
 import classes.produtos.Produto;
 import classes.produtos.ProdutoEletronico;
 import classes.produtos.ProdutoRoupa;
+import dados.dadosProdutos.DadosProdutos;
 import exceptions.EscolhaInvalidaException;
 import exceptions.ProdutoJaCadastradoException;
 import exceptions.ProdutoNaoEncontradoException;
 import interfaces.Menu;
 import interfaces.PesquisaProduto;
 
+import java.io.IOException;
 import java.util.*;
 
 public class GerenciadorProdutos implements PesquisaProduto, Menu {
-    Set<Produto> produtos = new HashSet<>();
+    Set<Produto> produtos;
+
+    public GerenciadorProdutos() {
+        try {
+            this.produtos = DadosProdutos.carregarProdutos();
+        } catch(IOException e) {
+            System.out.println(e.getMessage());
+            this.produtos = new HashSet<>();
+        }
+    }
 
     public void menu() {
         Scanner prompt = new Scanner(System.in);
@@ -77,12 +88,13 @@ public class GerenciadorProdutos implements PesquisaProduto, Menu {
             }
 
             produtos.add(produto);
+            DadosProdutos.salvarProdutos(produtos);
             System.out.println("Produto: " + produto.getNome() + " foi cadastrado com sucesso!");
 
         }  catch (InputMismatchException e) {
             System.out.println("Opção Inválida! Escolha uma opção válida!");
             prompt.nextLine();
-        } catch(ProdutoJaCadastradoException | EscolhaInvalidaException e) {
+        } catch(ProdutoJaCadastradoException | EscolhaInvalidaException | IOException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -96,11 +108,11 @@ public class GerenciadorProdutos implements PesquisaProduto, Menu {
     }
 
     public Produto criarProdutoEletronico(Scanner prompt) throws ProdutoJaCadastradoException {
-        System.out.println("Nome do Produto: ");
+        System.out.print("Nome do Produto: ");
         String nomeEletronico = prompt.nextLine();
         verificarProdutoCadastrado(nomeEletronico);
 
-        System.out.println("Preço do Produto: ");
+        System.out.print("Preço do Produto: ");
         double valorEletronico = prompt.nextDouble();
         prompt.nextLine();
 
@@ -108,11 +120,11 @@ public class GerenciadorProdutos implements PesquisaProduto, Menu {
     }
 
     public Produto criarProdutoRoupa(Scanner prompt) throws ProdutoJaCadastradoException {
-        System.out.println("Nome do Produto: ");
+        System.out.print("Nome do Produto: ");
         String nomeRoupa = prompt.nextLine();
         verificarProdutoCadastrado(nomeRoupa);
 
-        System.out.println("Preço do Produto: ");
+        System.out.print("Preço do Produto: ");
         double valorRoupa = prompt.nextDouble();
         prompt.nextLine();
 
@@ -132,7 +144,7 @@ public class GerenciadorProdutos implements PesquisaProduto, Menu {
 
     public void removerProduto(){
         Scanner prompt = new Scanner(System.in);
-        System.out.println("Digite o nome do produto a ser removido:");
+        System.out.print("Digite o nome do produto a ser removido:");
 
         try {
             String nome = prompt.nextLine();;
@@ -141,9 +153,10 @@ public class GerenciadorProdutos implements PesquisaProduto, Menu {
 
             if(produtoRemover != null){
                 produtos.remove(produtoRemover);
+                DadosProdutos.salvarProdutos(produtos);
                 System.out.println("Produto: " + produtoRemover.getNome() + " foi removido!");
             }
-        } catch (ProdutoNaoEncontradoException e) {
+        } catch (ProdutoNaoEncontradoException | IOException e) {
             System.out.println(e.getMessage());
         }
 

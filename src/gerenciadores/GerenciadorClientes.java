@@ -82,7 +82,7 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
 
         while(!entradaValida) {
             System.out.println("-------------------------------------CADASTRAR CLIENTES-------------------------------------");
-            System.out.println("Escolha o tipo de Cliente: 1. Cliente Comum | 2. Cliente VIP");
+            System.out.println("Escolha o tipo de Cliente: 1. Cliente Comum | 2. Cliente VIP | 3. Voltar");
 
             try {
                 int tipoCliente = prompt.nextInt();
@@ -97,6 +97,10 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
                     case 2:
                         cliente = criarClienteVIP(prompt);
                         break;
+
+                    case 3:
+                        return;
+
                     default:
                         throw new EscolhaInvalidaException("Opção Inválida! Escolha uma opção válida!");
                 }
@@ -119,11 +123,11 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
     }
 
     public Cliente criarClienteComum(Scanner prompt) throws ClienteJaCadastradoException, CPFJaCadastradoException {
-        System.out.println("Nome Completo: ");
+        System.out.print("Nome Completo: ");
         String nomeCompletoComum = prompt.nextLine();
         verificarClienteCadastrado(nomeCompletoComum);
 
-        System.out.println("CPF: ");
+        System.out.print("CPF: ");
         String cpfComum = prompt.nextLine();
         verificarCPFCadastrado(cpfComum);
 
@@ -131,11 +135,11 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
     }
 
     public Cliente criarClienteVIP(Scanner prompt) throws ClienteJaCadastradoException, CPFJaCadastradoException {
-        System.out.println("Nome: ");
+        System.out.print("Nome: ");
         String nomeCompletoVIP = prompt.nextLine();
         verificarClienteCadastrado(nomeCompletoVIP);
 
-        System.out.println("CPF: ");
+        System.out.print("CPF: ");
         String cpfVIP = prompt.nextLine();
         verificarCPFCadastrado(cpfVIP);
 

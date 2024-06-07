@@ -10,7 +10,7 @@ public class ClienteVIP extends Cliente {
     }
 
     public String enviarDados() {
-        return "Comum," + getNome() + "," + getCpf();
+        return "VIP," + getNome() + "," + getCpf() + ",";
     }
 
 }

@@ -20,9 +20,9 @@ public class VendaDebito extends Venda {
             return getProduto().getPreco() * ((100 - desconto)/100);
         }
 
-        System.out.println("Venda com 10% de taxa");
+        System.out.println("Venda com 5% de taxa");
         System.out.println("Desconto de: " + desconto + "% aplicado.");
-        return (getProduto().getPreco()*1.10) * ((100 - desconto)/100);
+        return (getProduto().getPreco()*1.05) * ((100 - desconto)/100);
     }
 
     public double calcularTotal() {
