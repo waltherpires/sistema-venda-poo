@@ -4,5 +4,5 @@ import classes.clientes.Cliente;
 import exceptions.ClienteNaoEncontradoException;
 
 public interface PesquisaCliente {
-    Cliente pesquisarCliente(String nome) throws ClienteNaoEncontradoException;
+     Cliente pesquisarCliente(String nome) throws ClienteNaoEncontradoException;
 }

@@ -33,5 +33,7 @@ public abstract class Produto {
         return preco;
     }
 
-    public abstract String toString();
+    public String toString(){
+        return "Nome: " + getNome()  + " | Preco: " + getPreco();
+    }
 }
