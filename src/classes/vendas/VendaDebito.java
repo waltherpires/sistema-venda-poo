@@ -11,7 +11,7 @@ public class VendaDebito extends Venda {
         super(cliente, produto, dataVenda);
     }
 
-    public VendaDebito(Cliente cliente, Produto produto, Date dataVenda, int desconto) {
+    public VendaDebito(Cliente cliente, Produto produto, Date dataVenda, double desconto) {
         super(cliente, produto, dataVenda, desconto);
     }
 
@@ -33,8 +33,8 @@ public class VendaDebito extends Venda {
     }
 
     public String valorTotal(){
-        if(this.getDesconto() != 0){
-            return "Valor: " + calcularTotal(this.getDesconto()) + " (Desconto: " + this.getDesconto() + "%";
+        if(getDesconto() != 0){
+            return "Valor: " + calcularTotal(getDesconto()) + " (Desconto: " + getDesconto() + "%";
         }
         return "Valor: " + calcularTotal();
     }

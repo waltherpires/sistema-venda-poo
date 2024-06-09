@@ -11,7 +11,7 @@ import interfaces.Menu;
 import java.util.*;
 
 public class GerenciadorVendas implements Menu {
-    List<Venda> vendas = new LinkedList<>();
+    private List<Venda> vendas = new LinkedList<>();
     private GerenciadorProdutos gerenciadorProdutos;
     private GerenciadorClientes gerenciadorClientes;
 
@@ -37,7 +37,7 @@ public class GerenciadorVendas implements Menu {
                         listarVendas();
                         break;
                     case 2:
-                        if(gerenciadorProdutos.produtos.isEmpty() || gerenciadorClientes.clientes.isEmpty()){
+                        if(gerenciadorProdutos.getProdutos().isEmpty() || gerenciadorClientes.getClientes().isEmpty()){
                             throw new ListaVaziaException("Erro ao Adicionar Venda: Sem clientes ou produtos cadastrados");
                         }
                         criarVenda();
@@ -62,7 +62,6 @@ public class GerenciadorVendas implements Menu {
             throw new VendaInvalidaException("Venda invalida: " + venda);
         }
         vendas.add(venda);
-
     }
 
     public void criarVenda() {

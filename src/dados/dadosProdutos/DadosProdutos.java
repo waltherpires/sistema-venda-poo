@@ -14,7 +14,7 @@ public class DadosProdutos {
     public static void salvarProdutos(Set<Produto> produtos) throws IOException {
         BufferedWriter arquivo = null;
         try {
-            FileWriter caminho = new FileWriter("produtos.txt");
+            FileWriter caminho = new FileWriter("src/dados/dadosProdutos/produtos.txt");
             arquivo = new BufferedWriter(caminho);
             for(Produto produto : produtos) {
                 arquivo.write(produto.enviarDados());
@@ -34,7 +34,7 @@ public class DadosProdutos {
         BufferedReader leitorArquivo = null;
 
         try {
-            FileReader leitorCaminho = new FileReader("produtos.txt");
+            FileReader leitorCaminho = new FileReader("src/dados/dadosProdutos/produtos.txt");
             leitorArquivo = new BufferedReader(leitorCaminho);
             String linha = leitorArquivo.readLine();
             while(linha != null) {

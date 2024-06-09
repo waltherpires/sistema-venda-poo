@@ -12,7 +12,7 @@ public class VendaCredito extends Venda {
         super(cliente, produto, dataVenda);
     }
 
-    public VendaCredito(Cliente cliente, Produto produto, Date dataVenda, int desconto) {
+    public VendaCredito(Cliente cliente, Produto produto, Date dataVenda, double desconto) {
         super(cliente, produto, dataVenda, desconto);
     }
 
@@ -36,8 +36,8 @@ public class VendaCredito extends Venda {
     }
 
     public String valorTotal(){
-        if(this.getDesconto() != 0){
-            return "Valor: " + calcularTotal(this.getDesconto());
+        if(getDesconto() != 0){
+            return "Valor: " + calcularTotal(getDesconto());
         }
         return "Valor: " + calcularTotal();
     }

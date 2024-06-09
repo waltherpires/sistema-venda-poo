@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class GerenciadorProdutos implements PesquisaProduto, Menu {
-    Set<Produto> produtos;
+    private Set<Produto> produtos;
 
     public GerenciadorProdutos() {
         try {
@@ -23,6 +23,10 @@ public class GerenciadorProdutos implements PesquisaProduto, Menu {
             System.out.println(e.getMessage());
             this.produtos = new HashSet<>();
         }
+    }
+
+    public Set<Produto> getProdutos() {
+        return produtos;
     }
 
     public void menu() {

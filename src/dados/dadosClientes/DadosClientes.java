@@ -12,7 +12,7 @@ public class DadosClientes {
     public static void salvarClientes(List<Cliente> clientes) throws IOException {
         BufferedWriter arquivo = null;
         try {
-            FileWriter caminho = new FileWriter("clientes.txt");
+            FileWriter caminho = new FileWriter("src/dados/dadosClientes/clientes.txt");
             arquivo = new BufferedWriter(caminho);
             for (Cliente cliente : clientes) {
                 arquivo.write(cliente.enviarDados());
@@ -32,7 +32,7 @@ public class DadosClientes {
         List<Cliente> clientes = new ArrayList<>();
         BufferedReader leitorArquivo = null;
         try {
-            FileReader leitorCaminho = new FileReader("clientes.txt");
+            FileReader leitorCaminho = new FileReader("src/dados/dadosClientes/clientes.txt");
             leitorArquivo = new BufferedReader(leitorCaminho);
             String linha = leitorArquivo.readLine();
             while (linha != null) {

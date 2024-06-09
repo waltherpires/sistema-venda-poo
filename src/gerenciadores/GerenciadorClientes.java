@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GerenciadorClientes implements PesquisaCliente, Menu {
-    List <Cliente> clientes;
+    private List <Cliente> clientes;
 
     public GerenciadorClientes(){
         try {
@@ -27,6 +27,10 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
             System.out.println(e.getMessage());
             this.clientes = new ArrayList<>();
         }
+    }
+
+    public List<Cliente> getClientes() {
+        return clientes;
     }
 
     public void menu(){
@@ -154,7 +158,7 @@ public class GerenciadorClientes implements PesquisaCliente, Menu {
         }
     }
 
-    private void verificarCPFCadastrado(String cpf) throws CPFJaCadastradoException {
+    public void verificarCPFCadastrado(String cpf) throws CPFJaCadastradoException {
         for(Cliente cliente : clientes){
             if(cliente.getCpf().equalsIgnoreCase(cpf)){
                 throw new CPFJaCadastradoException("CPF já cadastrado!");

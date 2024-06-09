@@ -9,7 +9,7 @@ public abstract class Venda {
     private Cliente cliente;
     private Produto produto;
     private Date dataVenda;
-    private int desconto;
+    private double desconto;
 
     public Venda(Cliente cliente, Produto produto, Date dataVenda) {
         this.cliente = cliente;
@@ -17,14 +17,14 @@ public abstract class Venda {
         this.dataVenda = dataVenda;
     }
 
-    public Venda(Cliente cliente, Produto produto, Date dataVenda, int desconto){
+    public Venda(Cliente cliente, Produto produto, Date dataVenda, double desconto){
         this.cliente = cliente;
         this.produto = produto;
         this.dataVenda = dataVenda;
         this.desconto = desconto;
     }
 
-    public int getDesconto(){ return desconto; }
+    public double getDesconto(){ return desconto; }
 
     public Cliente getCliente() {
         return cliente;
